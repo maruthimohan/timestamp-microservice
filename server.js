@@ -27,9 +27,17 @@ app.get("/api/hello", function (req, res) {
 /**
  * GET /api/timestamp/:date_string?
  */
-app.get("/api/timestamp/:date_string", function (req, res) {
+app.get("/api/timestamp/:date_string?", function (req, res) {
     // Date param
     let dateString  = req.params.date_string;
+    // If the date_string is undefined, return the current date
+    if(!dateString) {
+        res.json({
+            unix    : (new Date()).getTime(),
+            utc     : (new Date()).toUTCString()
+        });
+        return;
+    }
     // convert the dateString to an integer if it a number
     if(!isNaN(dateString)) {
         dateString = parseInt(dateString, 10);
